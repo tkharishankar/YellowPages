@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Yellow Pages</string>
+    <string name="tab_text_1">Call Logs</string>
+    <string name="tab_text_2">Contacts</string>
+    <string name="tab_text_3">Messages</string>
+    <string name="action_settings">Settings</string>
+</resources>
