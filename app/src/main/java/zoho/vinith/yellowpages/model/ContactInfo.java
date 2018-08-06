@@ -1,17 +1,17 @@
-package zoho.vinith.yellowpages;
+package zoho.vinith.yellowpages.model;
 
-public class CustomContactClass {
+public class ContactInfo {
 
     private String Id;
     private String Name;
     private String Phone_Number;
     private String Photo;
 
-    public CustomContactClass(String id, String name, String phone_Number, String photo) {
-        this.Id = id;
-        this.Name = name;
-        this.Phone_Number = phone_Number;
-        this.Photo = photo;
+    public ContactInfo(String id, String name, String phone_Number, String photo) {
+        Id = id;
+        Name = name;
+        Phone_Number = phone_Number;
+        Photo = photo;
     }
 
     public String getId() {
@@ -19,7 +19,7 @@ public class CustomContactClass {
     }
 
     public void setId(String id) {
-        this.Id = id;
+        Id = id;
     }
 
     public String getName() {
@@ -27,7 +27,7 @@ public class CustomContactClass {
     }
 
     public void setName(String name) {
-        this.Name = name;
+        Name = name;
     }
 
     public String getPhone_Number() {
@@ -35,7 +35,7 @@ public class CustomContactClass {
     }
 
     public void setPhone_Number(String phone_Number) {
-        this.Phone_Number = phone_Number;
+        Phone_Number = phone_Number;
     }
 
     public String getPhoto() {
@@ -43,6 +43,6 @@ public class CustomContactClass {
     }
 
     public void setPhoto(String photo) {
-        this.Photo = photo;
+        Photo = photo;
     }
 }
