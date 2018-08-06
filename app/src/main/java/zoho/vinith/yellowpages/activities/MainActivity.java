@@ -4,17 +4,15 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,8 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import zoho.vinith.yellowpages.database.YellowPageDatabase;
 import zoho.vinith.yellowpages.R;
+import zoho.vinith.yellowpages.database.YellowPageDatabase;
 import zoho.vinith.yellowpages.fragment.CallLogFragment;
 import zoho.vinith.yellowpages.fragment.ContactListFragment;
 import zoho.vinith.yellowpages.fragment.MessagesFragment;
@@ -55,15 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         dbHandler = new YellowPageDatabase(this,null,null,1);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
-                startActivityForResult(i, 100);
-            }
-        });
 
     }
 
@@ -82,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(TAG, "Contacts Phone Number: " + c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
                     Log.i(TAG, "Contacts Photo Uri: " + c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO_URI)));
                     dbHandler.addFavContact(new ContactInfo(
-                            c.getString(c.getColumnIndex(ContactsContract.Contacts._ID)),
                             c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)),
                             c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)),
                             c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO_URI))

@@ -17,20 +17,24 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
     private ArrayList<ContactInfo> contactClassList;
 
+    public void setContectList(ArrayList<ContactInfo> contactClassList) {
+        this.contactClassList = contactClassList;
+    }
+
     public class ContactViewHolder extends RecyclerView.ViewHolder {
         TextView contactName, contactNumber;
         ImageView imageView;
 
         public ContactViewHolder(View view) {
             super(view);
-            contactName =  view.findViewById(R.id.tvContactName);
-            contactNumber =  view.findViewById(R.id.tvContactNumber);
+            contactName = view.findViewById(R.id.tvContactName);
+            contactNumber = view.findViewById(R.id.tvContactNumber);
             imageView = view.findViewById(R.id.contact_image);
         }
     }
 
     public ContactAdapter(ArrayList<ContactInfo> contactClassList) {
-        this.contactClassList= contactClassList;
+        this.contactClassList = contactClassList;
     }
 
     @Override
@@ -41,11 +45,13 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
     @Override
     public void onBindViewHolder(ContactViewHolder holder, int position) {
-        ContactInfo contactClass= contactClassList.get(position);
+        ContactInfo contactClass = contactClassList.get(position);
         holder.contactName.setText(contactClass.getName());
         holder.contactNumber.setText(contactClass.getPhone_Number());
-        Uri imageUri = Uri.parse(contactClass.getPhoto());
-        holder.imageView.setImageURI(imageUri);
+        if (contactClass.getPhoto() != null) {
+            Uri imageUri = Uri.parse(contactClass.getPhoto());
+            holder.imageView.setImageURI(imageUri);
+        }
     }
 
     @Override

@@ -7,8 +7,7 @@ public class ContactInfo {
     private String Phone_Number;
     private String Photo;
 
-    public ContactInfo(String id, String name, String phone_Number, String photo) {
-        Id = id;
+    public ContactInfo(String name, String phone_Number, String photo) {
         Name = name;
         Phone_Number = phone_Number;
         Photo = photo;
