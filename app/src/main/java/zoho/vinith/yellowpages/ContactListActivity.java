@@ -37,9 +37,11 @@ public class ContactListActivity extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         recyclerView = (RecyclerView) view.findViewById(R.id.contact_recycler_view);
         dbHandler = new MyDBHandler(getContext(),null,null,1);
         contactClassList = new ArrayList<CustomContactClass>();
+        contactClassList.add(new CustomContactClass("000","Villa","9842","summ"));
         contactClassList = dbHandler.databaseToString();
 
         contactClassAdapter = new ContactClassAdapter(contactClassList);

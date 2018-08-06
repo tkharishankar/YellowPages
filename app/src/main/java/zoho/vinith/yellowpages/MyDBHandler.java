@@ -65,9 +65,9 @@ public class MyDBHandler extends SQLiteOpenHelper{
         while(!c.isAfterLast()){
             if(c.getString(c.getColumnIndex("contact_id"))!= null) {
                 al.add(new CustomContactClass(c.getString(c.getColumnIndex("contact_id")),
-                                        c.getString(c.getColumnIndex("contact_name")),
-                                        c.getString(c.getColumnIndex("contact_number")),
-                                        c.getString(c.getColumnIndex("contact_photo"))));
+                            c.getString(c.getColumnIndex("contact_name")),
+                            c.getString(c.getColumnIndex("contact_number")),
+                            c.getString(c.getColumnIndex("contact_photo"))));
             }
         }
         return al;
