@@ -13,37 +13,34 @@ import java.util.ArrayList;
 import zoho.vinith.yellowpages.R;
 import zoho.vinith.yellowpages.model.ContactInfo;
 
-public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MyViewHolder> {
+public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> {
 
     private ArrayList<ContactInfo> contactClassList;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class ContactViewHolder extends RecyclerView.ViewHolder {
         TextView contactName, contactNumber;
         ImageView imageView;
 
-        public MyViewHolder(View view) {
+        public ContactViewHolder(View view) {
             super(view);
-            contactName = (TextView) view.findViewById(R.id.tvContactName);
-            contactNumber = (TextView) view.findViewById(R.id.tvContactNumber);
-            imageView = (ImageView) view.findViewById(R.id.contact_image);
+            contactName =  view.findViewById(R.id.tvContactName);
+            contactNumber =  view.findViewById(R.id.tvContactNumber);
+            imageView = view.findViewById(R.id.contact_image);
         }
     }
-
 
     public ContactAdapter(ArrayList<ContactInfo> contactClassList) {
         this.contactClassList= contactClassList;
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.contacts_list_row, parent, false);
-
-        return new MyViewHolder(itemView);
+    public ContactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new ContactViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.contacts_list_row, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(ContactViewHolder holder, int position) {
         ContactInfo contactClass= contactClassList.get(position);
         holder.contactName.setText(contactClass.getName());
         holder.contactNumber.setText(contactClass.getPhone_Number());

@@ -39,9 +39,9 @@ public class ContactListFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.contact_recycler_view);
-        dbHandler = new YellowPageDatabase(getContext(),null,null,1);
-        contactClassList = new ArrayList<ContactInfo>();
+        recyclerView = view.findViewById(R.id.contact_recycler_view);
+        dbHandler = new YellowPageDatabase(getContext(), null, null, 1);
+        contactClassList = new ArrayList<>();
         contactClassList = dbHandler.databaseToString();
 
         contactAdapter = new ContactAdapter(contactClassList);
