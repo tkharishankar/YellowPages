@@ -24,6 +24,9 @@ import android.view.ViewGroup;
 
 import zoho.vinith.yellowpages.database.YellowPageDatabase;
 import zoho.vinith.yellowpages.R;
+import zoho.vinith.yellowpages.fragment.CallLogFragment;
+import zoho.vinith.yellowpages.fragment.ContactListFragment;
+import zoho.vinith.yellowpages.fragment.MessagesFragment;
 import zoho.vinith.yellowpages.model.ContactInfo;
 
 public class MainActivity extends AppCompatActivity {
@@ -140,11 +143,11 @@ public class MainActivity extends AppCompatActivity {
             int i = position;
             switch (position) {
                 case 0:
-                    return new CallLogsActivity();
+                    return new CallLogFragment();
                 case 1:
-                    return new ContactListActivity();
+                    return new ContactListFragment();
                 case 2:
-                    return new MessagesActivity();
+                    return new MessagesFragment();
             }
             return null;
         }

@@ -1,4 +1,4 @@
-package zoho.vinith.yellowpages.activities;
+package zoho.vinith.yellowpages.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,7 +17,7 @@ import zoho.vinith.yellowpages.database.YellowPageDatabase;
 import zoho.vinith.yellowpages.R;
 import zoho.vinith.yellowpages.model.ContactInfo;
 
-public class ContactListActivity extends Fragment {
+public class ContactListFragment extends Fragment {
 
     YellowPageDatabase dbHandler;
     private ArrayList<ContactInfo> contactClassList;
