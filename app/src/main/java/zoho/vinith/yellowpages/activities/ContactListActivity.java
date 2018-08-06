@@ -1,9 +1,7 @@
-package zoho.vinith.yellowpages;
+package zoho.vinith.yellowpages.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,14 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import zoho.vinith.yellowpages.adapter.ContactAdapter;
+import zoho.vinith.yellowpages.database.YellowPageDatabase;
+import zoho.vinith.yellowpages.R;
+import zoho.vinith.yellowpages.model.ContactInfo;
 
 public class ContactListActivity extends Fragment {
 
-    MyDBHandler dbHandler;
-    private ArrayList<CustomContactClass> contactClassList;
+    YellowPageDatabase dbHandler;
+    private ArrayList<ContactInfo> contactClassList;
     private RecyclerView recyclerView;
-    private ContactClassAdapter contactClassAdapter;
+    private ContactAdapter contactAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,16 +40,16 @@ public class ContactListActivity extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.contact_recycler_view);
-        dbHandler = new MyDBHandler(getContext(),null,null,1);
-        contactClassList = new ArrayList<CustomContactClass>();
+        dbHandler = new YellowPageDatabase(getContext(),null,null,1);
+        contactClassList = new ArrayList<ContactInfo>();
         contactClassList = dbHandler.databaseToString();
 
-        contactClassAdapter = new ContactClassAdapter(contactClassList);
+        contactAdapter = new ContactAdapter(contactClassList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(contactClassAdapter);
+        recyclerView.setAdapter(contactAdapter);
 
-        contactClassAdapter.notifyDataSetChanged();
+        contactAdapter.notifyDataSetChanged();
     }
 }

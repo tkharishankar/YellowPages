@@ -1,13 +1,13 @@
-package zoho.vinith.yellowpages;
+package zoho.vinith.yellowpages.model;
 
-public class CustomContactClass {
+public class ContactInfo {
 
     private String Id;
     private String Name;
     private String Phone_Number;
     private String Photo;
 
-    public CustomContactClass(String id, String name, String phone_Number, String photo) {
+    public ContactInfo(String id, String name, String phone_Number, String photo) {
         Id = id;
         Name = name;
         Phone_Number = phone_Number;

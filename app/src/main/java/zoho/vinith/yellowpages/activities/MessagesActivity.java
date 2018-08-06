@@ -1,4 +1,4 @@
-package zoho.vinith.yellowpages;
+package zoho.vinith.yellowpages.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

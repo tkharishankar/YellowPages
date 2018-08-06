@@ -1,4 +1,4 @@
-package zoho.vinith.yellowpages;
+package zoho.vinith.yellowpages.adapter;
 
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -10,9 +10,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class ContactClassAdapter extends RecyclerView.Adapter<ContactClassAdapter.MyViewHolder> {
+import zoho.vinith.yellowpages.R;
+import zoho.vinith.yellowpages.model.ContactInfo;
 
-    private ArrayList<CustomContactClass> contactClassList;
+public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MyViewHolder> {
+
+    private ArrayList<ContactInfo> contactClassList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView contactName, contactNumber;
@@ -27,7 +30,7 @@ public class ContactClassAdapter extends RecyclerView.Adapter<ContactClassAdapte
     }
 
 
-    public ContactClassAdapter(ArrayList<CustomContactClass> contactClassList) {
+    public ContactAdapter(ArrayList<ContactInfo> contactClassList) {
         this.contactClassList= contactClassList;
     }
 
@@ -41,7 +44,7 @@ public class ContactClassAdapter extends RecyclerView.Adapter<ContactClassAdapte
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        CustomContactClass contactClass= contactClassList.get(position);
+        ContactInfo contactClass= contactClassList.get(position);
         holder.contactName.setText(contactClass.getName());
         holder.contactNumber.setText(contactClass.getPhone_Number());
         Uri imageUri = Uri.parse(contactClass.getPhoto());

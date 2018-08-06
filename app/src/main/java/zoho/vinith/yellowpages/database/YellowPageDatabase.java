@@ -1,4 +1,4 @@
-package zoho.vinith.yellowpages;
+package zoho.vinith.yellowpages.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,17 +8,19 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 
-public class MyDBHandler extends SQLiteOpenHelper{
+import zoho.vinith.yellowpages.model.ContactInfo;
+
+public class YellowPageDatabase extends SQLiteOpenHelper{
 
     private static final int DB_VERSION = 1;
-    private static final String DB_NAME = "zohoTask.db";
+    private static final String DB_NAME = "yellow_page.db";
     public static final String TABLE_CONTACTS = "fav_contacts";
     public static final String COLUMN_ID = "contact_id";
     public static final String COLUMN_NAME = "contact_name";
     public static final String COLUMN_NUMBER = "contact_number";
     public static final String COLUMN_PHOTO_URI= "contact_photo";
 
-    public MyDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public YellowPageDatabase(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DB_NAME, factory, DB_VERSION);
     }
 
@@ -39,12 +41,12 @@ public class MyDBHandler extends SQLiteOpenHelper{
         onCreate(sqLiteDatabase);
     }
 
-    public void addFavContact(CustomContactClass customContactClass){
+    public void addFavContact(ContactInfo contactInfo){
         ContentValues values = new ContentValues();
-        values.put(COLUMN_ID,Integer.parseInt(customContactClass.getId()));
-        values.put(COLUMN_NAME,customContactClass.getName());
-        values.put(COLUMN_NUMBER,customContactClass.getPhone_Number());
-        values.put(COLUMN_PHOTO_URI,customContactClass.getPhoto());
+        values.put(COLUMN_ID,Integer.parseInt(contactInfo.getId()));
+        values.put(COLUMN_NAME, contactInfo.getName());
+        values.put(COLUMN_NUMBER, contactInfo.getPhone_Number());
+        values.put(COLUMN_PHOTO_URI, contactInfo.getPhoto());
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_CONTACTS,null,values);
     }
@@ -54,8 +56,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.execSQL("DELETE FROM " + TABLE_CONTACTS + " WHERE "+ COLUMN_ID + "=\"" + contact_id + "\";");
     }
 
-    public ArrayList<CustomContactClass> databaseToString(){
-        ArrayList<CustomContactClass> al = new ArrayList<CustomContactClass>();
+    public ArrayList<ContactInfo> databaseToString(){
+        ArrayList<ContactInfo> al = new ArrayList<ContactInfo>();
         SQLiteDatabase db = getWritableDatabase();
 
         String query = "SELECT * FROM " + TABLE_CONTACTS;
@@ -64,7 +66,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         c.moveToFirst();
         while(!c.isAfterLast()){
             if(c.getString(c.getColumnIndex("contact_id"))!= null) {
-                al.add(new CustomContactClass(c.getString(c.getColumnIndex("contact_id")),
+                al.add(new ContactInfo(c.getString(c.getColumnIndex("contact_id")),
                                         c.getString(c.getColumnIndex("contact_name")),
                                         c.getString(c.getColumnIndex("contact_number")),
                                         c.getString(c.getColumnIndex("contact_photo"))));

@@ -1,9 +1,11 @@
-package zoho.vinith.yellowpages;
+package zoho.vinith.yellowpages.activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Bundle;
+
+import zoho.vinith.yellowpages.R;
 
 public class SplashActivity extends Activity {
 

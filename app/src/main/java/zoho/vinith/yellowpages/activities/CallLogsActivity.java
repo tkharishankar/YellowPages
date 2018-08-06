@@ -1,11 +1,12 @@
-package zoho.vinith.yellowpages;
+package zoho.vinith.yellowpages.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
+
+import zoho.vinith.yellowpages.R;
 
 public class CallLogsActivity extends Fragment {
 
