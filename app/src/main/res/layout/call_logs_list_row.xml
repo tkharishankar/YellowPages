@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="2dp"
-            android:layout_weight="0.8"
+            android:layout_weight="0.6"
             android:background="@color/colorPrimaryDark">
 
             <ImageView
@@ -32,9 +32,9 @@
             android:layout_marginLeft="2dp"
             android:paddingLeft="5dp"
             android:gravity="center_vertical"
-            android:layout_weight="0.2"
-            android:background="@color/colorPrimaryDark"
-            >
+            android:layout_weight="0.3"
+            android:background="@color/colorPrimaryDark">
+
             <TextView
                 android:id="@+id/tvContactName"
                 android:layout_width="wrap_content"
@@ -54,7 +54,39 @@
                 android:textSize="@dimen/fab_margin"
                 android:fontFamily="sans-serif-condensed"
                 />
+
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="2dp"
+            android:paddingLeft="5dp"
+            android:gravity="center_vertical"
+            android:layout_weight="0.6"
+            android:background="@color/colorPrimaryDark">
+
+            <TextView
+                android:id="@+id/tvCallType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:textSize="@dimen/fab_margin"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Call Type"/>
+
+            <TextView
+                android:id="@+id/tvCallDuration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:textSize="@dimen/fab_margin"
+                android:fontFamily="sans-serif-condensed"
+                android:text="duration"/>
+        </LinearLayout>
+
+
 
     </LinearLayout>
 

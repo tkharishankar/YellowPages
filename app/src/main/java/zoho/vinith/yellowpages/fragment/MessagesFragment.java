@@ -1,8 +1,6 @@
 package zoho.vinith.yellowpages.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -28,14 +26,25 @@ public class MessagesFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FloatingActionButton fab = view.findViewById(R.id.fab);
+        FloatingActionButton fab = view.findViewById(R.id.message_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
-                startActivityForResult(i, 100);
+
+
+//                Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+//                sendIntent.setData(Uri.parse("sms:"));
+//                startActivity(sendIntent);
+
+
+//                sendIntent.putExtra("address", "12125551212");
+//                sendIntent.putExtra("sms_body","Body of Message");
+//                Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+//                i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+//                startActivityForResult(i, 100);
             }
         });
     }
+
+
 }

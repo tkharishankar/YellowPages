@@ -29,8 +29,8 @@ import zoho.vinith.yellowpages.model.ContactInfo;
 
 public class MainActivity extends AppCompatActivity {
 
-    YellowPageDatabase dbHandler;
     private String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,35 +51,7 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        dbHandler = new YellowPageDatabase(this,null,null,1);
-
-
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.i(TAG, "onActivityResult()");
-        if (requestCode == 100) {
-            if (resultCode == AppCompatActivity.RESULT_OK) {
-                Uri contactsData = data.getData();
-                CursorLoader loader = new CursorLoader(this, contactsData, null, null, null, null);
-                Cursor c = loader.loadInBackground();
-                if (c.moveToFirst()) {
-                    Log.i(TAG, "Contacts ID: " + c.getString(c.getColumnIndex(ContactsContract.Contacts._ID)));
-                    Log.i(TAG, "Contacts Name: " + c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
-                    Log.i(TAG, "Contacts Phone Number: " + c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
-                    Log.i(TAG, "Contacts Photo Uri: " + c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO_URI)));
-                    dbHandler.addFavContact(new ContactInfo(
-                            c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)),
-                            c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)),
-                            c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO_URI))
-                    ));
-                }
-            }
-        }
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

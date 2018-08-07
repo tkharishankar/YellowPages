@@ -61,7 +61,7 @@ public class ContactListFragment extends Fragment {
         recyclerView.setAdapter(contactAdapter);
         contactAdapter.notifyDataSetChanged();
 
-        FloatingActionButton fab = view.findViewById(R.id.fab);
+        FloatingActionButton fab = view.findViewById(R.id.contact_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,6 +70,15 @@ public class ContactListFragment extends Fragment {
                 startActivityForResult(i, 100);
             }
         });
+
+    }
+
+    public void dialPhoneNumber(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -82,10 +91,6 @@ public class ContactListFragment extends Fragment {
                 CursorLoader loader = new CursorLoader(getActivity(), contactsData, null, null, null, null);
                 Cursor c = loader.loadInBackground();
                 if (c.moveToFirst()) {
-                    Log.i(TAG, "Contacts ID: " + c.getString(c.getColumnIndex(ContactsContract.Contacts._ID)));
-                    Log.i(TAG, "Contacts Name: " + c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
-                    Log.i(TAG, "Contacts Phone Number: " + c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
-                    Log.i(TAG, "Contacts Photo Uri: " + c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO_URI)));
                     dbHandler.addFavContact(new ContactInfo(
                             c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)),
                             c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)),
@@ -95,7 +100,7 @@ public class ContactListFragment extends Fragment {
             }
         }
         contactClassList = dbHandler.getContactListfromDB();
-        contactAdapter.setContectList(contactClassList);
+        contactAdapter.setContactList(contactClassList);
         contactAdapter.notifyDataSetChanged();
 
     }

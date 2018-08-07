@@ -70,4 +70,14 @@ public class YellowPageDatabase extends SQLiteOpenHelper {
         }
         return allContact;
     }
+
+    public boolean isContactNumberInDB(String phoneNumber){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_CONTACTS + " WHERE "+ COLUMN_NUMBER + "=" + phoneNumber;
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.getCount()<=0)
+            return false;
+        else
+            return true;
+    }
 }
