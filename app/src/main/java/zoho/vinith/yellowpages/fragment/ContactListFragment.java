@@ -29,6 +29,8 @@ import static android.content.ContentValues.TAG;
 
 public class ContactListFragment extends Fragment {
 
+    private String TAG = "Contact Fragment";
+
     YellowPageDatabase dbHandler;
     private ArrayList<ContactInfo> contactClassList;
     private RecyclerView recyclerView;
@@ -37,17 +39,21 @@ public class ContactListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG,"OnCreate()");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG,"OnCreateView()");
         return inflater.inflate(R.layout.layout_contact_list, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Log.d(TAG,"OnViewCreated");
 
         recyclerView = view.findViewById(R.id.contact_recycler_view);
         dbHandler = new YellowPageDatabase(getActivity(), null, null, 1);
@@ -65,9 +71,9 @@ public class ContactListFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
-                startActivityForResult(i, 100);
+                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+                startActivityForResult(intent, 100);
             }
         });
 
@@ -102,6 +108,30 @@ public class ContactListFragment extends Fragment {
         contactClassList = dbHandler.getContactListfromDB();
         contactAdapter.setContactList(contactClassList);
         contactAdapter.notifyDataSetChanged();
+    }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG,"OnPause()");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG,"OnResume()");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG,"OnDestroyView()");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG,"OnDestroy()");
     }
 }

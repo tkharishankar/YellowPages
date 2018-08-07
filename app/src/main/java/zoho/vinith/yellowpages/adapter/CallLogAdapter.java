@@ -43,7 +43,7 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.ContactV
     @Override
     public ContactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ContactViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.contacts_list_row, parent, false));
+                .inflate(R.layout.call_logs_list_row, parent, false));
     }
 
     @Override

@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="2dp"
-            android:layout_weight="0.6"
+            android:layout_weight="0.5"
             android:background="@color/colorPrimaryDark">
 
             <ImageView
@@ -64,7 +64,7 @@
             android:layout_marginLeft="2dp"
             android:paddingLeft="5dp"
             android:gravity="center_vertical"
-            android:layout_weight="0.6"
+            android:layout_weight="0.4"
             android:background="@color/colorPrimaryDark">
 
             <TextView
@@ -85,8 +85,6 @@
                 android:fontFamily="sans-serif-condensed"
                 android:text="duration"/>
         </LinearLayout>
-
-
 
     </LinearLayout>
 
