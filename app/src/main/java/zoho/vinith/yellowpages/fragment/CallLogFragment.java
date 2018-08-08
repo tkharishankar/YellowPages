@@ -190,32 +190,6 @@ public class CallLogFragment extends Fragment {
         super.onDestroy();
         Log.d(TAG,"OnDestroy()");
     }
-
-//
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode,
-//                                           String permissions[], int[] grantResults) {
-//        switch (requestCode) {
-//            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
-//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    // permission was granted, yay! do the
-//                } else {
-//
-//                    // permission denied, boo! Disable the
-//                    // functionality that depends on this permission.
-//                }
-//                return;
-//            }
-//            case MY_PERMISSIONS_REQUEST_READ_CALL_LOG:{
-//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//
-//                } else {
-//
-//                }
-//                return;
-//            }
-//        }
-//    }
     public void dialPhoneNumber(String phoneNumber) {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + phoneNumber));
