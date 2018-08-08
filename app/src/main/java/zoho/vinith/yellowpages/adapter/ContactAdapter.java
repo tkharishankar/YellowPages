@@ -48,7 +48,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         ContactInfo contactClass = contactClassList.get(position);
         holder.contactName.setText(contactClass.getName());
         holder.contactNumber.setText(contactClass.getPhone_Number());
-        if (contactClass.getPhoto() != null) {
+        if(contactClass.getPhoto() == null||contactClass.getPhoto().equals("none")){
+
+        }
+        else{
             Uri imageUri = Uri.parse(contactClass.getPhoto());
             holder.imageView.setImageURI(imageUri);
         }

@@ -50,9 +50,9 @@ public class YellowPageDatabase extends SQLiteOpenHelper {
         db.insert(TABLE_CONTACTS, null, values);
     }
 
-    public void deleteFavContact(Integer contact_id) {
+    public void deleteFavContact(String phoneNumber) {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_CONTACTS + " WHERE " + COLUMN_ID + "=\"" + contact_id + "\";");
+        db.execSQL("DELETE FROM " + TABLE_CONTACTS + " WHERE " + COLUMN_NUMBER + "=\"" + phoneNumber + "\";");
     }
 
     public ArrayList<ContactInfo> getContactListfromDB() {

@@ -10,16 +10,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import zoho.vinith.yellowpages.R;
 import zoho.vinith.yellowpages.model.CallLogInfo;
-import zoho.vinith.yellowpages.model.ContactInfo;
 
 public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.ContactViewHolder> {
 
     private ArrayList<CallLogInfo> callLogInfoList;
+
 
     public void setCallLogInfoList(ArrayList<CallLogInfo> callLogInfoList) {
         this.callLogInfoList = callLogInfoList;
@@ -71,7 +70,7 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.ContactV
             holder.callType.setTypeface(null, Typeface.BOLD);
 
         }
-        if(callLogInfo.getPhoto() == null||callLogInfo.getPhoto().equals("")){
+        if(callLogInfo.getPhoto() == null||callLogInfo.getPhoto().equals("none")){
 
         }
         else{

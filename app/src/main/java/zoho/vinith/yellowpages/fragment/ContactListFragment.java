@@ -1,6 +1,8 @@
 package zoho.vinith.yellowpages.fragment;
 
+import android.app.AlertDialog;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -20,9 +22,11 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import zoho.vinith.yellowpages.RecyclerItemClickListener;
 import zoho.vinith.yellowpages.adapter.ContactAdapter;
 import zoho.vinith.yellowpages.database.YellowPageDatabase;
 import zoho.vinith.yellowpages.R;
+import zoho.vinith.yellowpages.model.CallLogInfo;
 import zoho.vinith.yellowpages.model.ContactInfo;
 
 import static android.content.ContentValues.TAG;
@@ -67,6 +71,43 @@ public class ContactListFragment extends Fragment {
         recyclerView.setAdapter(contactAdapter);
         contactAdapter.notifyDataSetChanged();
 
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getContext(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        ContactInfo contactInfo = contactClassList.get(position);
+                        dialPhoneNumber(contactInfo.getPhone_Number());
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        final ContactInfo contactInfo = contactClassList.get(position);
+
+                        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+                        alertDialogBuilder.setMessage("Are you sure wanted to remove "+ contactInfo.getName() +" from list?" );
+                                alertDialogBuilder.setPositiveButton("yes",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface arg0, int arg1) {
+                                                dbHandler.deleteFavContact(contactInfo.getPhone_Number());
+                                                contactClassList = dbHandler.getContactListfromDB();
+                                                contactAdapter.setContactList(contactClassList);
+                                                contactAdapter.notifyDataSetChanged();
+                                            }
+                                        });
+
+                                alertDialogBuilder.setNegativeButton("No",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                return;
+                                            }
+                                        });
+
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+                        alertDialog.show();
+                    }
+                })
+        );
+
         FloatingActionButton fab = view.findViewById(R.id.contact_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +121,7 @@ public class ContactListFragment extends Fragment {
     }
 
     public void dialPhoneNumber(String phoneNumber) {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + phoneNumber));
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivity(intent);
@@ -96,12 +137,20 @@ public class ContactListFragment extends Fragment {
                 Uri contactsData = data.getData();
                 CursorLoader loader = new CursorLoader(getActivity(), contactsData, null, null, null, null);
                 Cursor c = loader.loadInBackground();
+                String photoUri;
                 if (c.moveToFirst()) {
+                    if(c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO_URI)) == null ||c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO_URI)).equals("")){
+                        photoUri = "none";
+                    }
+                    else{
+                        photoUri = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO_URI));
+                    }
                     dbHandler.addFavContact(new ContactInfo(
                             c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)),
                             c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)),
-                            c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO_URI))
+                            photoUri
                     ));
+                    Log.i(TAG + "Image URI",photoUri);
                 }
             }
         }

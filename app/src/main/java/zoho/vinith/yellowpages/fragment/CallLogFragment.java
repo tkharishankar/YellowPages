@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.CallLog;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -25,6 +27,7 @@ import java.util.Collections;
 import java.util.Date;
 
 import zoho.vinith.yellowpages.R;
+import zoho.vinith.yellowpages.RecyclerItemClickListener;
 import zoho.vinith.yellowpages.adapter.CallLogAdapter;
 import zoho.vinith.yellowpages.database.YellowPageDatabase;
 import zoho.vinith.yellowpages.model.CallLogInfo;
@@ -88,6 +91,19 @@ public class CallLogFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(callLogAdapter);
         callLogAdapter.notifyDataSetChanged();
+
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getContext(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        CallLogInfo callLogInfo = callLogInfoList.get(position);
+                        dialPhoneNumber(callLogInfo.getPhone_Number());
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // do whatever
+                    }
+                })
+        );
 
         injectCallLogList(callLogAdapter);
 
@@ -200,6 +216,13 @@ public class CallLogFragment extends Fragment {
                 }
                 return;
             }
+        }
+    }
+    public void dialPhoneNumber(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
         }
     }
 }
