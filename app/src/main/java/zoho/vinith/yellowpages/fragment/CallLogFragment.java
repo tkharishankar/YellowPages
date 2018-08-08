@@ -1,9 +1,14 @@
 package zoho.vinith.yellowpages.fragment;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.CallLog;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +21,7 @@ import android.view.ViewGroup;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 import zoho.vinith.yellowpages.R;
@@ -26,6 +32,8 @@ import zoho.vinith.yellowpages.model.ContactInfo;
 
 public class CallLogFragment extends Fragment {
 
+    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 10;
+    private static final int MY_PERMISSIONS_REQUEST_READ_CALL_LOG = 20;
     private String TAG = "Call Fragment";
 
     YellowPageDatabase dbHandler;
@@ -33,10 +41,27 @@ public class CallLogFragment extends Fragment {
     private RecyclerView recyclerView;
     private CallLogAdapter callLogAdapter;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG,"OnCreate()");
+
+        getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS);
+        if (getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},
+                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+            return;
+        }
+        getActivity().checkSelfPermission(Manifest.permission.READ_CALL_LOG);
+        if (getActivity().checkSelfPermission(Manifest.permission.READ_CALL_LOG)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_CALL_LOG},
+                    MY_PERMISSIONS_REQUEST_READ_CALL_LOG);
+            return;
+        }
+
     }
 
     @Override
@@ -58,13 +83,14 @@ public class CallLogFragment extends Fragment {
         callLogInfoList = new ArrayList<>();
         callLogAdapter = new CallLogAdapter(callLogInfoList);
 
-        injectCallLogList(callLogAdapter);
-
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(callLogAdapter);
         callLogAdapter.notifyDataSetChanged();
+
+        injectCallLogList(callLogAdapter);
+
     }
 
     private void injectCallLogList(CallLogAdapter callLogAdapter) {
@@ -84,7 +110,10 @@ public class CallLogFragment extends Fragment {
                     String callType = managedCursor.getString(type);
                     String callDate = managedCursor.getString(date);
                     Date callDayTime = new Date(Long.valueOf(callDate));
+                    Format formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    String dateOfCall = formatter.format(callDayTime);
                     String callDuration = managedCursor.getString(duration);
+                    callDuration = timeConversion(Integer.parseInt(callDuration));
                     String dir = null;
                     int dircode = Integer.parseInt(callType);
                     switch (dircode) {
@@ -100,14 +129,28 @@ public class CallLogFragment extends Fragment {
                             dir = "MISSED";
                             break;
                     }
-                    callLogInfoList.add(new CallLogInfo(contactInfo.getName(),phNumber,contactInfo.getPhoto(),dir,callDuration +" sec"));
+                    callLogInfoList.add(new CallLogInfo(contactInfo.getName(),phNumber,contactInfo.getPhoto(),dateOfCall,dir,callDuration));
                 }
             }
         }
         //managedCursor.close();
+        Collections.reverse(callLogInfoList);
         callLogAdapter.setCallLogInfoList(callLogInfoList);
         callLogAdapter.notifyDataSetChanged();
 
+    }
+
+    private static String timeConversion(int totalSeconds) {
+
+        final int MINUTES_IN_AN_HOUR = 60;
+        final int SECONDS_IN_A_MINUTE = 60;
+
+        int seconds = totalSeconds % SECONDS_IN_A_MINUTE;
+        int totalMinutes = totalSeconds / SECONDS_IN_A_MINUTE;
+        int minutes = totalMinutes % MINUTES_IN_AN_HOUR;
+        int hours = totalMinutes / MINUTES_IN_AN_HOUR;
+
+        return String.format("%02d:%02d:%02d", hours,minutes,seconds);
     }
 
     @Override
@@ -132,5 +175,31 @@ public class CallLogFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG,"OnDestroy()");
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! do the
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+            case MY_PERMISSIONS_REQUEST_READ_CALL_LOG:{
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+
+                }
+                return;
+            }
+        }
     }
 }

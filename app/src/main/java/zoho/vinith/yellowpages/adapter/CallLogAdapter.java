@@ -1,5 +1,7 @@
 package zoho.vinith.yellowpages.adapter;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import zoho.vinith.yellowpages.R;
@@ -23,7 +26,7 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.ContactV
     }
 
     public class ContactViewHolder extends RecyclerView.ViewHolder {
-        TextView contactName, contactNumber, callType, callDuration;
+        TextView contactName, contactNumber, callType, callDate, callDuration;
         ImageView imageView;
 
         public ContactViewHolder(View view) {
@@ -32,6 +35,7 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.ContactV
             contactNumber = view.findViewById(R.id.tvContactNumber);
             imageView = view.findViewById(R.id.contact_image);
             callType = view.findViewById(R.id.tvCallType);
+            callDate = view.findViewById(R.id.tvCallDate);
             callDuration = view.findViewById(R.id.tvCallDuration);
         }
     }
@@ -49,11 +53,28 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.ContactV
     @Override
     public void onBindViewHolder(ContactViewHolder holder, int position) {
         CallLogInfo callLogInfo = callLogInfoList.get(position);
+
         holder.contactName.setText(callLogInfo.getName());
         holder.contactNumber.setText(callLogInfo.getPhone_Number());
         holder.callType.setText(callLogInfo.getCall_Type());
+        holder.callDate.setText(callLogInfo.getDateOfCall());
         holder.callDuration.setText(callLogInfo.getCall_Duration());
-        if (callLogInfo.getPhoto() != null) {
+
+        if(holder.callType.getText().equals("MISSED")){
+
+            holder.contactName.setTextColor(Color.parseColor("#FF6347"));
+            holder.contactNumber.setTextColor(Color.parseColor("#FF6347"));
+            holder.callType.setTextColor(Color.parseColor("#FF6347"));
+            holder.callDate.setTextColor(Color.parseColor("#FF6347"));
+            holder.callDuration.setTextColor(Color.parseColor("#FF6347"));
+
+            holder.callType.setTypeface(null, Typeface.BOLD);
+
+        }
+        if(callLogInfo.getPhoto() == null||callLogInfo.getPhoto().equals("")){
+
+        }
+        else{
             Uri imageUri = Uri.parse(callLogInfo.getPhoto());
             holder.imageView.setImageURI(imageUri);
         }

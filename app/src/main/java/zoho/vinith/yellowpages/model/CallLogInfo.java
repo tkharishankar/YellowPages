@@ -7,14 +7,24 @@ public class CallLogInfo {
     private String Phone_Number;
     private String Photo;
     private String Call_Type;
+    private String dateOfCall;
     private String Call_Duration;
 
-    public CallLogInfo(String name, String phone_Number, String photo,String call_Type,String call_Duration) {
+    public CallLogInfo(String name, String phone_Number, String photo, String dateOfCall, String call_Type, String call_Duration) {
         this.Name = name;
         this.Phone_Number = phone_Number;
         this.Photo = photo;
         this.Call_Type = call_Type;
+        this.dateOfCall = dateOfCall;
         this.Call_Duration = call_Duration;
+    }
+
+    public String getDateOfCall() {
+        return this.dateOfCall;
+    }
+
+    public void setDateOfCall(String dateOfCall) {
+        this.dateOfCall = dateOfCall;
     }
 
     public String getCall_Type() {

@@ -1,11 +1,8 @@
 package zoho.vinith.yellowpages.activities;
 
-import android.content.CursorLoader;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,7 +10,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,16 +17,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import zoho.vinith.yellowpages.R;
-import zoho.vinith.yellowpages.database.YellowPageDatabase;
 import zoho.vinith.yellowpages.fragment.CallLogFragment;
 import zoho.vinith.yellowpages.fragment.ContactListFragment;
 import zoho.vinith.yellowpages.fragment.MessagesFragment;
-import zoho.vinith.yellowpages.model.ContactInfo;
 
 public class MainActivity extends AppCompatActivity {
 
     private String TAG = "MainActivity";
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
