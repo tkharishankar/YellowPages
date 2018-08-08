@@ -50,14 +50,12 @@ public class CallLogFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Log.d(TAG,"OnCreate()");
 
-        getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS);
         if (getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},
                     MY_PERMISSIONS_REQUEST_READ_CONTACTS);
             return;
         }
-        getActivity().checkSelfPermission(Manifest.permission.READ_CALL_LOG);
         if (getActivity().checkSelfPermission(Manifest.permission.READ_CALL_LOG)
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CALL_LOG},
@@ -193,31 +191,31 @@ public class CallLogFragment extends Fragment {
         Log.d(TAG,"OnDestroy()");
     }
 
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! do the
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-            case MY_PERMISSIONS_REQUEST_READ_CALL_LOG:{
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                } else {
-
-                }
-                return;
-            }
-        }
-    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode,
+//                                           String permissions[], int[] grantResults) {
+//        switch (requestCode) {
+//            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
+//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    // permission was granted, yay! do the
+//                } else {
+//
+//                    // permission denied, boo! Disable the
+//                    // functionality that depends on this permission.
+//                }
+//                return;
+//            }
+//            case MY_PERMISSIONS_REQUEST_READ_CALL_LOG:{
+//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//
+//                } else {
+//
+//                }
+//                return;
+//            }
+//        }
+//    }
     public void dialPhoneNumber(String phoneNumber) {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + phoneNumber));
