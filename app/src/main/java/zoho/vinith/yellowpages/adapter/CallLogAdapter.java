@@ -2,6 +2,7 @@ package zoho.vinith.yellowpages.adapter;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,23 +65,23 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.ContactV
             holder.callDuration.setTextColor(Color.parseColor("#FF6347"));
             holder.callType.setTypeface(null, Typeface.BOLD);
         } else {
-            holder.contactName.setTextColor(Color.parseColor("#000000"));
-            holder.contactNumber.setTextColor(Color.parseColor("#000000"));
-            holder.callType.setTextColor(Color.parseColor("#000000"));
-            holder.callDate.setTextColor(Color.parseColor("#000000"));
-            holder.callDuration.setTextColor(Color.parseColor("#000000"));
+            holder.contactName.setTextColor(Color.parseColor("#ffffff"));
+            holder.contactNumber.setTextColor(Color.parseColor("#ffffff"));
+            holder.callType.setTextColor(Color.parseColor("#ffffff"));
+            holder.callDate.setTextColor(Color.parseColor("#ffffff"));
+            holder.callDuration.setTextColor(Color.parseColor("#ffffff"));
             holder.callType.setTypeface(null, Typeface.NORMAL);
         }
-//        if (callLogInfo.getPhoto().isEmpty() && callLogInfo.getPhoto() == null) {
-//            holder.imageView.setImageResource(R.drawable.contact_icon_480);
-//        } else {
-//            try {
-//                Uri imageUri = Uri.parse(callLogInfo.getPhoto());
-//                holder.imageView.setImageURI(imageUri);
-//            } catch (Exception e) {
-//                holder.imageView.setImageResource(R.drawable.contact_icon_480);
-//            }
-//        }
+        if (callLogInfo.getPhoto() == null || callLogInfo.getPhoto().equals("none") || callLogInfo.getPhoto().equals("")) {
+            holder.imageView.setImageResource(R.drawable.contact_icon_480);
+        } else {
+            try {
+                Uri imageUri = Uri.parse(callLogInfo.getPhoto());
+                holder.imageView.setImageURI(imageUri);
+            } catch (Exception e) {
+                holder.imageView.setImageResource(R.drawable.contact_icon_480);
+            }
+        }
 
     }
 

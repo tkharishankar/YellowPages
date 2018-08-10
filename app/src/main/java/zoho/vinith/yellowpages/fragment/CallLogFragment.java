@@ -45,7 +45,7 @@ public class CallLogFragment extends Fragment {
 
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
 
-    private String[] permissions = {Manifest.permission.READ_CONTACTS, Manifest.permission.READ_CALL_LOG};
+    private String[] permissions = {Manifest.permission.READ_CONTACTS, Manifest.permission.READ_CALL_LOG,Manifest.permission.CALL_PHONE,Manifest.permission.READ_SMS};
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private boolean arePermissionsEnabled() {
@@ -70,7 +70,7 @@ public class CallLogFragment extends Fragment {
     public void populateContacts() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (arePermissionsEnabled()) {
-                injectCallLogList(callLogAdapter);
+                injectCallLogList();
             } else {
                 requestMultiplePermissions();
             }
@@ -112,8 +112,10 @@ public class CallLogFragment extends Fragment {
         callLogInfoList = new ArrayList<>();
         callLogAdapter = new CallLogAdapter(callLogInfoList);
 
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(callLogAdapter);
         callLogAdapter.notifyDataSetChanged();
@@ -122,8 +124,7 @@ public class CallLogFragment extends Fragment {
                 new RecyclerItemClickListener(getContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        CallLogInfo callLogInfo = callLogInfoList.get(position);
-                        dialPhoneNumber(callLogInfo.getPhone_Number());
+                        dialPhoneNumber(callLogInfoList.get(position).getPhone_Number());
                     }
 
                     @Override
@@ -133,34 +134,34 @@ public class CallLogFragment extends Fragment {
                 })
         );
         populateContacts();
-
     }
 
 
-    private void injectCallLogList(CallLogAdapter callLogAdapter) {
-        ArrayList<ContactInfo> contactInfoList = new ArrayList<>();
-        contactInfoList = dbHandler.getContactListfromDB();
+    private void injectCallLogList() {
+        ArrayList<ContactInfo> contactInfoList = dbHandler.getContactListfromDB();
+        callLogInfoList = new ArrayList<>();
+
         @SuppressLint("MissingPermission")
-        Cursor managedCursor = getActivity().getContentResolver().query(CallLog.Calls.CONTENT_URI,
+        Cursor cursor = getActivity().getContentResolver().query(CallLog.Calls.CONTENT_URI,
                 null, null, null, CallLog.Calls.DATE + " DESC");
-        int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER);
-        int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE);
-        int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
-        int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
-        while (managedCursor.moveToNext()) {
-            String phNumber = managedCursor.getString(number);
-            Log.i("number", "number:" + phNumber);
-            //+ "\ttype:" + callDayTime + "\tdate:" + dateOfCall + "\tduration:" + callDuration);
+        int number = cursor.getColumnIndex(CallLog.Calls.NUMBER);
+        int type = cursor.getColumnIndex(CallLog.Calls.TYPE);
+        int date = cursor.getColumnIndex(CallLog.Calls.DATE);
+        int duration = cursor.getColumnIndex(CallLog.Calls.DURATION);
+
+        while (cursor.moveToNext()) {
+            String phNumber = cursor.getString(number);
+            Log.i(TAG, "number:" + phNumber);
 
             for (ContactInfo contactInfo : contactInfoList) {
                 Log.i("contactInfo" + contactInfo.getPhone_Number(), "contactInfo:" + phNumber);
                 if (checkMatch(contactInfo.getPhone_Number(), phNumber)) {
-                    String callType = managedCursor.getString(type);
-                    String callDate = managedCursor.getString(date);
+                    String callType = cursor.getString(type);
+                    String callDate = cursor.getString(date);
                     Date callDayTime = new Date(Long.valueOf(callDate));
                     Format formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                     String dateOfCall = formatter.format(callDayTime);
-                    String callDuration = managedCursor.getString(duration);
+                    String callDuration = cursor.getString(duration);
                     callDuration = timeConversion(Integer.parseInt(callDuration));
                     String dir = null;
                     int dircode = Integer.parseInt(callType);
@@ -181,10 +182,9 @@ public class CallLogFragment extends Fragment {
                 }
             }
         }
-        //managedCursor.close();
+        //cursor.close();
         callLogAdapter.setCallLogInfoList(callLogInfoList);
         callLogAdapter.notifyDataSetChanged();
-
     }
 
     private boolean checkMatch(String saved_number, String log_number) {
@@ -196,7 +196,6 @@ public class CallLogFragment extends Fragment {
     }
 
     private static String timeConversion(int totalSeconds) {
-
         final int MINUTES_IN_AN_HOUR = 60;
         final int SECONDS_IN_A_MINUTE = 60;
 
@@ -230,6 +229,7 @@ public class CallLogFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "OnDestroy()");
+
     }
 
 
@@ -238,6 +238,18 @@ public class CallLogFragment extends Fragment {
         intent.setData(Uri.parse("tel:" + phoneNumber));
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivity(intent);
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            Log.i(TAG,"Visible");
+            populateContacts();
+        }
+        else{
+            Log.i(TAG,"Not visible");
         }
     }
 }

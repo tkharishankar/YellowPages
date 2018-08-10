@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import zoho.vinith.yellowpages.RecyclerItemClickListener;
 import zoho.vinith.yellowpages.adapter.ContactAdapter;
@@ -67,6 +68,7 @@ public class ContactListFragment extends Fragment {
         contactAdapter = new ContactAdapter(contactClassList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(contactAdapter);
         contactAdapter.notifyDataSetChanged();
@@ -91,17 +93,13 @@ public class ContactListFragment extends Fragment {
                                                 contactClassList = dbHandler.getContactListfromDB();
                                                 contactAdapter.setContactList(contactClassList);
                                                 contactAdapter.notifyDataSetChanged();
-                                            }
-                                        });
-
+                                            }});
                                 alertDialogBuilder.setNegativeButton("No",
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
                                                 return;
-                                            }
-                                        });
-
+                                            }});
                         AlertDialog alertDialog = alertDialogBuilder.create();
                         alertDialog.show();
                     }
@@ -122,11 +120,13 @@ public class ContactListFragment extends Fragment {
 
     public void dialPhoneNumber(String phoneNumber) {
         Intent intent = new Intent(Intent.ACTION_CALL);
+        Log.i(TAG + " Phone Number" , phoneNumber);
         intent.setData(Uri.parse("tel:" + phoneNumber));
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivity(intent);
         }
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -148,9 +148,7 @@ public class ContactListFragment extends Fragment {
                     dbHandler.addFavContact(new ContactInfo(
                             c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)),
                             c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)),
-                            photoUri
-                    ));
-                    Log.i(TAG + "Image URI",photoUri);
+                            photoUri));
                 }
             }
         }
